@@ -1,0 +1,53 @@
+[
+    {
+      "title": "Tarea 1",
+      "description": "Descripción de la Tarea 1",
+      "assignedTo": "Usuario 1",
+      "startDate": "2024-04-15",
+      "endDate": "2024-04-30",
+      "status": "En Proceso",
+      "priority": "Alta",
+      "comments": "Comentarios de la Tarea 1"
+    },
+    {
+      "title": "Tarea 2",
+      "description": "Descripción de la Tarea 2",
+      "assignedTo": "Usuario 2",
+      "startDate": "2024-05-01",
+      "endDate": "2024-05-15",
+      "status": "Bloqueado",
+      "priority": "Baja",
+      "comments": "Comentarios de la Tarea 2"
+    },
+    {
+      "title": "Tarea 3",
+      "description": "Descripción de la Tarea 3",
+      "assignedTo": "Usuario 3",
+      "startDate": "2024-06-01",
+      "endDate": "2024-06-15",
+      "status": "En Proceso",
+      "priority": "Media",
+      "comments": "Comentarios de la Tarea 3"
+    },
+    {
+      "title": "Tarea 4",
+      "description": "Descripción de la Tarea 4",
+      "assignedTo": "Usuario 4",
+      "startDate": "2024-07-01",
+      "endDate": "2024-07-15",
+      "status": "Finalizado",
+      "priority": "Alta",
+      "comments": "Comentarios de la Tarea 4"
+    },
+    {
+      "title": "Tarea 5",
+      "description": "Descripción de la Tarea 5",
+      "assignedTo": "Usuario 5",
+      "startDate": "2024-08-01",
+      "endDate": "2024-08-15",
+      "status": "En Proceso",
+      "priority": "Baja",
+      "comments": "Comentarios de la Tarea 5"
+    }
+  ]
+  

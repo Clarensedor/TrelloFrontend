@@ -1,0 +1,123 @@
+    // Función para cargar los datos en el modal
+// Función para cargar los datos de una tarea específica en el modal
+function cargarDatosDeTarea(tareaJson, tareaId) {
+    // Obtener los elementos de entrada del modal
+    let titleInput = document.querySelector('.title');
+    let descriptionInput = document.querySelector('.description');
+    let assignedToInput = document.querySelector('.assignedTo');
+    let startDateInput = document.querySelector('.startDate');
+    let endDateInput = document.querySelector('.endDate');
+    let statusInput = document.querySelector('.status');
+    let priorityInput = document.querySelector('.priority');
+    let commentsInput = document.querySelector('.comments');
+  
+    // Obtener los datos de la tarea específica según el ID proporcionado
+    const tarea = tareaJson[tareaId];
+  
+    // Establecer los valores de los elementos de entrada con los datos de la tarea
+    titleInput.value = tarea.title;
+    descriptionInput.value = tarea.description;
+    assignedToInput.value = tarea.assignedTo;
+    startDateInput.value = tarea.startDate;
+    endDateInput.value = tarea.endDate;
+    statusInput.value = tarea.status;
+    priorityInput.value = tarea.priority;
+    commentsInput.value = tarea.comments;
+  }
+  
+  // Llamar a la función para cargar los datos de la tarea con ID 0 en el modal (por ejemplo)
+  
+      const tareas = [
+        {
+          "title": "Tarea 1",
+          "description": "Descripción de la Tarea 1",
+          "assignedTo": "Usuario 1",
+          "startDate": "2024-04-15",
+          "endDate": "2024-04-30",
+          "status": "En Proceso",
+          "priority": "Alta",
+          "comments": "Comentarios de la Tarea 1"
+        },
+        {
+          "title": "Tarea 2",
+          "description": "Descripción de la Tarea 2",
+          "assignedTo": "Usuario 2",
+          "startDate": "2024-05-01",
+          "endDate": "2024-05-15",
+          "status": "Bloqueado",
+          "priority": "Baja",
+          "comments": "Comentarios de la Tarea 2"
+        },
+        {
+          "title": "Tarea 3",
+          "description": "Descripción de la Tarea 3",
+          "assignedTo": "Usuario 3",
+          "startDate": "2024-06-01",
+          "endDate": "2024-06-15",
+          "status": "Finalizado",
+          "priority": "Media",
+          "comments": "Comentarios de la Tarea 3"
+        },
+        {
+          "title": "Tarea 4",
+          "description": "Descripción de la Tarea 4",
+          "assignedTo": "Usuario 4",
+          "startDate": "2024-07-01",
+          "endDate": "2024-07-15",
+          "status": "En Proceso",
+          "priority": "Muy Alta",
+          "comments": "Comentarios de la Tarea 4"
+        },
+        {
+          "title": "Tarea 5",
+          "description": "Descripción de la Tarea 5",
+          "assignedTo": "Usuario 5",
+          "startDate": "2024-08-01",
+          "endDate": "2024-08-15",
+          "status": "Bloqueado",
+          "priority": "Muy Baja",
+          "comments": "Comentarios de la Tarea 5"
+        },
+        {
+          "title": "Tarea 6",
+          "description": "Descripción de la Tarea 6",
+          "assignedTo": "Usuario 6",
+          "startDate": "2024-09-01",
+          "endDate": "2024-09-15",
+          "status": "En Proceso",
+          "priority": "Alta",
+          "comments": "Comentarios de la Tarea 6"
+        },
+        {
+          "title": "Tarea 7",
+          "description": "Descripción de la Tarea 7",
+          "assignedTo": "Usuario 7",
+          "startDate": "2024-10-01",
+          "endDate": "2024-10-15",
+          "status": "Finalizado",
+          "priority": "Baja",
+          "comments": "Comentarios de la Tarea 7"
+        },
+        {
+          "title": "Tarea 8",
+          "description": "Descripción de la Tarea 8",
+          "assignedTo": "Usuario 8",
+          "startDate": "2024-11-01",
+          "endDate": "2024-11-15",
+          "status": "En Proceso",
+          "priority": "Media",
+          "comments": "Comentarios de la Tarea 8"
+        },
+        {
+          "title": "Tarea 9",
+          "description": "Descripción de la Tarea 9",
+          "assignedTo": "Usuario 9",
+          "startDate": "2024-12-01",
+          "endDate": "2024-12-15",
+          "status": "Bloqueado",
+          "priority": "Muy Alta",
+          "comments": "Comentarios de la Tarea 9"
+        }
+      ];
+      
+      cargarDatosDeTarea(tareas, 2); // Cambia el ID según la tarea que desees cargar
