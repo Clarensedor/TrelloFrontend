@@ -1,4 +1,3 @@
-
 //obtengo el botons
 let addCardButtons = document.querySelectorAll(".addCardButton");
 
@@ -10,16 +9,17 @@ addCardButtons.forEach((button) => {
     newCard.className = "tarjeta";
 
     // Prioridad
-    const prioridades = ["Alta", "Baja", "Media", "Muy Alta", "Muy Baja"];
+    let prioridades = ["Alta", "Baja", "Media"];
 
     // Estado
-    const estados = ["En Proceso", "Bloqueado", "Finalizado"];
+    let estados = ["En Proceso", "Por Hacer", "Finalizado"];
 
     let cardContent = `
     <div class="inputs">
     <button class="openTask">
       <p>tarea</p>
     </button>
+    <button class="eliminar-tarjeta">Eliminar</button>
     <div class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
@@ -67,161 +67,171 @@ addCardButtons.forEach((button) => {
     // cargardiv
     newCard.innerHTML = cardContent;
 
+    let eliminarButton = newCard.querySelector(".eliminar-tarjeta");
+    eliminarButton.addEventListener("click", function () {
+      newCard.remove();
+    });
 
+    // Agregar botón de cerrar
+    let closeButton = newCard.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      newCard.remove();
+    });
 
-   
+    // Agregar la nueva tarjeta al contenedor
+    let cardsContainer = document.querySelector(".cards");
+    cardsContainer.appendChild(newCard);
 
-    
-    function ApiCargaModal(tarea) {
-      console.log('antes de hacer magia' + tarea);
-      
-      // Obtener los elementos de entrada del modal
-      let titleInput = newCard.querySelector('.title');
-      let descriptionInput = newCard.querySelector('.description');
-      let assignedToInput = newCard.querySelector('.assignedTo');
-      let startDateInput = newCard.querySelector('.startDate');
-      let endDateInput = newCard.querySelector('.endDate');
-      let statusInput = newCard.querySelector('.status');
-      let priorityInput = newCard.querySelector('.priority');
-      let commentsInput = newCard.querySelector('.comments');
-
-      // Establecer los valores de los elementos de entrada con los datos del JSON
-      assignedToInput.value = tarea.assignedTo;
-      commentsInput.value = tarea.comments;
-      descriptionInput.value = tarea.description;
-      endDateInput.value = tarea.endDate;
-      titleInput.value = tarea.title;
-      startDateInput.value = tarea.startDate;
-      statusInput.value = tarea.status;
-      priorityInput.value = tarea.priority;
-    }
-   
-
-    // Llamar a la función para cargar los datos en el modal
-   
-  
+    // Funcionalidad del modal
+    let modal = newCard.querySelector(".modal");
+    let openTaskButton = newCard.querySelector(".openTask");
+    openTaskButton.addEventListener("click", function () {
+      modal.style.display = "block";
+    });
+    closeButton = modal.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+    window.addEventListener("click", function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
   });
 });
 
-
-    // cargar datos
+    // promesa obtengo response
     let response
     let url = "http://localhost:3000/api/tasks";
     fetch(url)
     .then(response => response.json())
     .then(data => {
       tareas = data;
-      tareas.forEach(e=>createCards(tareas));
+      //o es aca que me tira tres veces
+      tareas.forEach(e=>createCardsForResponse(tareas));
     })
-
-    
-
     .catch(error => {
       console.error('Error:', error);
     });
 
 
-
-function createCards(response) {
-  console.log('data' + response);
-  const cardsContainer = document.querySelector(".cards");
+//crear cartas
+function createCardsForResponse(response) {
+  console.log('data', response);
+  let cardsContainer = document.querySelector(".cards");
 
   
-    const newCard = document.createElement("div");
+  // Eliminar tarjetas existentes //preguntar si esta bien esta chanchada o tengo que hacer alguna cosa 
+  let existingCards = cardsContainer.querySelectorAll(".tarjeta");
+  existingCards.forEach(card => card.remove());
+
+  
+
+
+  //foreach para cargar los datos del response
+  response.forEach(item => {
+    let newCard = document.createElement("div");
     newCard.className = "tarjeta";
-
-    const prioridades = ["Alta", "Baja", "Media", "Muy Alta", "Muy Baja"];
-    const estados = ["En Proceso", "Bloqueado", "Finalizado"];
-
-    const cardContent = `
-    <div class="inputs">
-      <button class="openTask">
-        <p>tarea</p>
-      </button>
-      <div class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <div class="input-wrapper">
-            <label for="title">Título:</label>
-            <input type="text" class="title" value="${title}" />
-          </div>
-          <div class="input-wrapper">
-            <label for="description">Descripción:</label>
-            <input type="text" class="description" value="${description}" />
-          </div>
-          <div class="input-wrapper">
-            <label for="assignedTo">Asignado a:</label>
-            <input type="text" class="assignedTo" value="${assignedTo}" />
-          </div>
-          <div class="input-wrapper">
-            <label for="startDate">Fecha de inicio:</label>
-            <input type="date" class="startDate" value="${startDate}" />
-          </div>
-          <div class="input-wrapper">
-            <label for="endDate">Fecha de fin:</label>
-            <input type="date" class="endDate" value="${endDate}" />
-          </div>
-          <div class="input-wrapper">
-            <label for="status">Estado:</label>
-            <select class="status">
-              ${estados.map(
-                (estado) =>
-                  `<option value="${estado}" ${
-                    estado === status ? "selected" : ""
-                  }>${estado}</option>`
-              ).join("")}
-            </select>
-          </div>
-          <div class="input-wrapper">
-            <label for="priority">Prioridad:</label>
-            <select class="priority">
-              ${prioridades.map(
-                (prioridad) =>
-                  `<option value="${prioridad}" ${
-                    prioridad === priority ? "selected" : ""
-                  }>${prioridad}</option>`
-              ).join("")}
-            </select>
-          </div>
-          <div class="input-wrapper">
-            <label for="comments">Comentarios:</label>
-            <input type="text" class="comments" value="${comments}" />
+    let cardContent = `
+      <div class="inputs">
+        <button class="openTask">
+          <p>${item.title}</p>
+        </button>
+        <button class="eliminar-tarjeta">Eliminar</button>
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="input-wrapper">
+              <label for="title">Título:</label>
+              <input type="text" class="title" value="${item.title}">
+            </div>
+            <div class="input-wrapper">
+              <label for="description">Descripción:</label>
+              <input type="text" class="description" value="${item.description}">
+            </div>
+            <div class="input-wrapper">
+              <label for="assignedTo">Asignado a:</label>
+              <input type="text" class="assignedTo" value="${item.assignedTo}">
+            </div>
+            <div class="input-wrapper">
+              <label for="startDate">Fecha de inicio:</label>
+              <input type="date" class="startDate" value="${formatDate(item.startDate, 1)}">
+            </div>
+            <div class="input-wrapper">
+              <label for="endDate">Fecha de fin:</label>
+              <input type="date" class="endDate" value="${formatDate(item.endDate, 2)}">
+            </div>
+            <div class="input-wrapper">
+              <label for="status">Estado:</label>
+              <select class="status">
+                <option value="En Proceso" ${item.status === "In Progress" ? "selected" : ""}>En Proceso</option>
+                <option value="Bloqueado" ${item.status === "To Do" ? "selected" : ""}>Por Hacer</option>
+                <option value="Finalizado" ${item.status === "Done" ? "selected" : ""}>Finalizado</option>
+              </select>
+            </div>
+            <div class="input-wrapper">
+              <label for="priority">Prioridad:</label>
+              <select class="priority">
+                <option value="Alta" ${item.priority === "High" ? "selected" : ""}>Alta</option>
+                <option value="Baja" ${item.priority === "Low" ? "selected" : ""}>Baja</option>
+                <option value="Media" ${item.priority === "Medium" ? "selected" : ""}>Media</option>
+              </select>
+            </div>
+            <div class="input-wrapper">
+              <label for="comments">Comentarios:</label>
+              <input type="text" class="comments" value="${item.comments}">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  `;
-
+    `;
     newCard.innerHTML = cardContent;
+
+
+
+    //cargo logica boton eliminar
+    let eliminarButton = newCard.querySelector(".eliminar-tarjeta");
+    eliminarButton.addEventListener("click", function () {
+      newCard.remove();
+    });
+
     cardsContainer.appendChild(newCard);
 
-      // Obtener modal
-      let modal = newCard.querySelector(".modal");
 
-      // Botones que utilizo para abrir el modal
-      let openTaskButtons = newCard.querySelectorAll(".openTask");
-      openTaskButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-          // Display the modal
-          modal.style.display = "block";
-        });
+    // boton cerrar modal
+    let closeButton = newCard.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+
+    let modal = newCard.querySelector(".modal");
+    let openTaskButtons = newCard.querySelectorAll(".openTask");
+    openTaskButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        modal.style.display = "block";
       });
-  
-      // Botón que cierra el modal 
-      let closeButton = modal.querySelector(".close");
-  
-      // Evento para cerrar el modal
-      closeButton.addEventListener("click", function () {
+    });
+    closeButton = modal.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+    window.addEventListener("click", function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-      });
-  
-      // Cuando el usuario hace clic en cualquier parte fuera del modal, ciérralo
-      window.addEventListener("click", function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      });
-  
+      }
+    });
+  });
 }
 
-createCards(3);
+
+//formateo de fecha
+function formatDate(dateString, tipo) {
+  let [day, month, year] = dateString.split('/');
+  let date = new Date(year, month - 1, day);
+
+  let anio = date.getFullYear();
+  let mes = String(date.getMonth() + 1).padStart(2, '0');
+  let dia = String(date.getDate()).padStart(2, '0');
+
+  return `${anio}-${mes}-${dia}`;
+}

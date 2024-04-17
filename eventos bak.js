@@ -43,7 +43,7 @@ addCardButtons.forEach((button) => {
           </div>
           <div class="input-wrapper">
             <label for="status">Estado:</label>
-            <select id="status" class="status">
+            <select id="status" class0=0"status">
               ${estados.map(estado => `<option value="${estado}">${estado}</option>`).join('')}
             </select>
           </div>
