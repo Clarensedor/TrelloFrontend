@@ -1,0 +1,3 @@
+como hago cuando agregue mas columnas para cargar los datos del response se me ocurre un parametro que usando el estado de la tarea lo ponga en la columna correspondiente
+Tengo el problema de que el response se me aparece tres veces como lo soluciono sin tener que borrar todas las tarjetas cada vez que lo cargo
+Tendria que hacer una funcion que tenga true o false cuando es una nuevatarjeta para repetir codigo? o con lo que tengo me manejo bien?
