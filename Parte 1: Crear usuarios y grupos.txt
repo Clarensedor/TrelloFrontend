@@ -1,0 +1,33 @@
+Parte 1: usuarios y grupos
+
+Crear tres ususarios llamados: Yama, Pablo, Pepe
+Crear dos grupos: Profes, Ayudantes
+
+Agregar Yama y Pablo al docente
+Agregar Pablo y Pepe al ayudante
+
+Parte 2: carpetas y permisos
+
+Crear una carpeta llamada carpeta_docente en el home
+Poner de dueño de la carpeta_docente al grupo docente
+ponerle los permisos de carpeta_docente para que los miembros del grupo 
+
+Establece los permisos de carpeta_docente para que los miembros del grupo docente tengan permisos de lectura y escritura, mientras que los demás sólo tengan permisos de lectura.
+Dentro de carpeta_docente, crea una subcarpeta llamada carpeta_ayudantes.
+Cambia el dueño de la carpeta_ayudantes al grupo ayudante.
+Establece los permisos de carpeta_ayudantes para que los miembros del grupo ayudante tengan permisos de lectura y escritura, mientras que los demás no tengan ningún permiso.
+
+Parte 3: Probar los permisos
+Iniciar sesión con cada uno de los usuarios creados (Yama, PAblo y Pepe).
+Intentar crear, leer, escribir y eliminar archivos en carpeta_docente y carpeta_ayudantes.
+Observar y anotar los permisos que tienen cada carpeta y que pasa con los usuarios al interactuar con las mismas.
+
+Comandos a utilizar 
+iniciar sesion con otro usuario: su - <usuario>
+Crear archivo: touch <archivo>
+Leer archivo: cat <archivo>
+listar usuarios: cat /etc/passwd
+listar grupos: cat /etc/group
+Mostrar permisos de carpeta: ls -lh <carpeta>
+cambiar permisos chmod: <carpeta/archivo>
+poner dueño a usuario o grupo: chown  usuario/grupo <carpeta/archivo>

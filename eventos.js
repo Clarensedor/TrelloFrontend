@@ -1,18 +1,18 @@
 //obtengo el botons
 let addCardButtons = document.querySelectorAll(".addCardButton");
 
-addCardButtons.forEach((button) => {
+addCardButtons.forEach((button) => {  
   //evento de click
   button.addEventListener("click", function () {
-
+    
     let newCard = document.createElement("div");
     newCard.className = "tarjeta";
 
     // Prioridad
-    let prioridades = ["Low", "High", "Medium"];
+    let prioridades = ["Alta", "Baja", "Media"];
 
     // Estado
-    let estados = ["In Progress", "To Do", "Done"];
+    let estados = ["En Proceso", "Por Hacer", "Finalizado"];
 
     let cardContent = `
     <div class="inputs">
@@ -67,135 +67,72 @@ addCardButtons.forEach((button) => {
     // cargardiv
     newCard.innerHTML = cardContent;
 
-
-    addCardButtons.forEach((button) => {
-      button.addEventListener("click", async function () {
-        // Obtener los valores de los campos del formulario
-        const titleInput = 'titulo';
-        const descriptionInput = 'descripcion';
-        const assignedToInput = 'pepe';
-        const startDateInput = '31/12/2024';
-        const endDateInput = '22/09/2024';
-        const statusSelect = 'To do';
-        const prioritySelect = 'Low';
-        const commentsInput = '.';
-    
-        
-        const cardData = {
-          title: titleInput,
-          description: descriptionInput,
-          assignedTo: assignedToInput,
-          startDate: startDateInput,
-          endDate: endDateInput,
-          status: statusSelect,
-          priority: prioritySelect,
-          comments: commentsInput,
-        };
-        
-        
-        createCard(cardData);
-        await recargar();
-        
-      });
+    let eliminarButton = newCard.querySelector(".eliminar-tarjeta");
+    eliminarButton.addEventListener("click", function () {
+      newCard.remove();
     });
 
-      let eliminarButton = newCard.querySelector(".eliminar-tarjeta");
-      eliminarButton.addEventListener("click", function () {
-        newCard.remove();
-      });
+    // Agregar botón de cerrar
+    let closeButton = newCard.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      newCard.remove();
+    });
 
-      // Agregar botón de cerrar
-      let closeButton = newCard.querySelector(".close");
-      closeButton.addEventListener("click", function () {
-        newCard.remove();
-      });
+    // Agregar la nueva tarjeta al contenedor
+    let cardsContainer = document.querySelector(".cards");
+    cardsContainer.appendChild(newCard);
 
-      // Agregar la nueva tarjeta al contenedor
-      let cardsContainer = document.querySelector(".cards");
-      cardsContainer.appendChild(newCard);
-
-      // Funcionalidad del modal
-      let modal = newCard.querySelector(".modal");
-      let openTaskButton = newCard.querySelector(".openTask");
-      openTaskButton.addEventListener("click", function () {
-        modal.style.display = "block";
-      });
-      closeButton = modal.querySelector(".close");
-      closeButton.addEventListener("click", function () {
+    // Funcionalidad del modal
+    let modal = newCard.querySelector(".modal");
+    let openTaskButton = newCard.querySelector(".openTask");
+    openTaskButton.addEventListener("click", function () {
+      modal.style.display = "block";
+    });
+    closeButton = modal.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+    window.addEventListener("click", function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-      });
-      window.addEventListener("click", function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      });
+      }
     });
   });
+});
 
-  window.addEventListener('load', async function () {
-    await recargar();
-  });
-
-
-
-  
-  async function createCard(cardData) {
-    try {
-      const response = await fetch('http://localhost:3000/api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cardData),
-      });
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-  }
-
-
-
-  // promesa obtengo response
-  async function recargar() {
-    console.log('lo borra')
+    // promesa obtengo response
     let response
     let url = "http://localhost:3000/api/tasks";
     fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        tareas = data;
-        //if(tareas.lenght == 0){
-        createCardsForResponse(tareas);
-        //  }
-        //o es aca que me tira tres veces
-        tareas.forEach(e => createCardsForResponse(tareas));
-
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }
+    .then(response => response.json())
+    .then(data => {
+      tareas = data;
+      //o es aca que me tira tres veces
+      tareas.forEach(e=>createCardsForResponse(tareas));
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 
 
+//crear cartas
+function createCardsForResponse(response) {
+  console.log('data', response);
+  let cardsContainer = document.querySelector(".cards");
 
-  //crear cartas
-  function createCardsForResponse(response) {
+  
+  // Eliminar tarjetas existentes //preguntar si esta bien esta chanchada o tengo que hacer alguna cosa 
+  let existingCards = cardsContainer.querySelectorAll(".tarjeta");
+  existingCards.forEach(card => card.remove());
 
-    let cardsContainer = document.querySelector(".cards");
-
-
-    // Eliminar tarjetas existentes //preguntar si esta bien esta chanchada o tengo que hacer alguna cosa 
-    let existingCards = cardsContainer.querySelectorAll(".tarjeta");
-    existingCards.forEach(card => card.remove());
+  
 
 
-
-
-    //foreach para cargar los datos del response
-    response.forEach(item => {
-      let newCard = document.createElement("div");
-      newCard.className = "tarjeta";
-      let cardContent = `
+  //foreach para cargar los datos del response
+  response.forEach(item => {
+    let newCard = document.createElement("div");
+    newCard.className = "tarjeta";
+    let cardContent = `
       <div class="inputs">
         <button class="openTask">
           <p>${item.title}</p>
@@ -218,11 +155,11 @@ addCardButtons.forEach((button) => {
             </div>
             <div class="input-wrapper">
               <label for="startDate">Fecha de inicio:</label>
-              <input type="date" class="startDate" value="${formatDate(item.startDate)}">
+              <input type="date" class="startDate" value="${formatDate(item.startDate, 1)}">
             </div>
             <div class="input-wrapper">
               <label for="endDate">Fecha de fin:</label>
-              <input type="date" class="endDate" value="${formatDate(item.endDate)}">
+              <input type="date" class="endDate" value="${formatDate(item.endDate, 2)}">
             </div>
             <div class="input-wrapper">
               <label for="status">Estado:</label>
@@ -248,67 +185,53 @@ addCardButtons.forEach((button) => {
         </div>
       </div>
     `;
-      newCard.innerHTML = cardContent;
+    newCard.innerHTML = cardContent;
 
 
 
-      //cargo logica boton eliminar
-      let eliminarButton = newCard.querySelector(".eliminar-tarjeta");
-      eliminarButton.addEventListener("click", async function () {
-        await deleteTask(item.id);
-        await recargar();
-      });
+    //cargo logica boton eliminar
+    let eliminarButton = newCard.querySelector(".eliminar-tarjeta");
+    eliminarButton.addEventListener("click", function () {
+      newCard.remove();
+    });
 
-      cardsContainer.appendChild(newCard);
+    cardsContainer.appendChild(newCard);
 
 
-      // boton cerrar modal
-      let closeButton = newCard.querySelector(".close");
-      closeButton.addEventListener("click", function () {
-        modal.style.display = "none";
-      });
+    // boton cerrar modal
+    let closeButton = newCard.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
 
-      let modal = newCard.querySelector(".modal");
-      let openTaskButtons = newCard.querySelectorAll(".openTask");
-      openTaskButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-          modal.style.display = "block";
-        });
-      });
-      closeButton = modal.querySelector(".close");
-      closeButton.addEventListener("click", function () {
-        modal.style.display = "none";
-      });
-      window.addEventListener("click", function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
+    let modal = newCard.querySelector(".modal");
+    let openTaskButtons = newCard.querySelectorAll(".openTask");
+    openTaskButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        modal.style.display = "block";
       });
     });
-  }
-
-  async function deleteTask(taskId) {
-    console.log(taskId)
-    try {
-      const response = await fetch(`http://localhost:3000/api/tasks/${taskId}`, {
-        method: 'DELETE',
-      });
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-  }
-
+    closeButton = modal.querySelector(".close");
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+    window.addEventListener("click", function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+}
 
 
+//formateo de fecha
+function formatDate(dateString, tipo) {
+  let [day, month, year] = dateString.split('/');
+  let date = new Date(year, month - 1, day);
 
-  //formateo de fecha
-  function formatDate(dateString, tipo) {
-    let [day, month, year] = dateString.split('/');
-    let date = new Date(year, month - 1, day);
+  let anio = date.getFullYear();
+  let mes = String(date.getMonth() + 1).padStart(2, '0');
+  let dia = String(date.getDate()).padStart(2, '0');
 
-    let anio = date.getFullYear();
-    let mes = String(date.getMonth() + 1).padStart(2, '0');
-    let dia = String(date.getDate()).padStart(2, '0');
-
-    return `${anio}-${mes}-${dia}`;
-  }
+  return `${anio}-${mes}-${dia}`;
+}
